@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eden Fruit Salad & Parfait - Pre-Order</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #D97757;
+            --primary-light: #E89775;
+            --primary-dark: #B85C3C;
+            --accent: #F4E4C1;
+            --text-dark: #2C2620;
+            --text-light: #6B6360;
+            --border: #E8DDD1;
+            --bg: #FDFBF8;
+            --card: #FFFFFF;
+            --success: #4CAF50;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        button.primary {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+
+        button.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        button.secondary {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--border);
+        }
+
+        button.secondary:hover {
+            background: var(--bg);
+            border-color: var(--text-light);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0 80px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Products Section */
+        .products {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-bottom: 60px;
+        }
+
+        .product-card {
+            background: var(--card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #FFE8D6 0%, #FFF4E6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .product-info {
+            padding: 24px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* Forms & Auth */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .form-container {
+            max-width: 450px;
+            margin: 80px auto;
+            background: var(--card);
+            padding: 48px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .form-title {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="date"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.1);
+        }
+
+        .error-message {
+            color: #D32F2F;
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .form-buttons button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Order Page */
+        .greeting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .greeting h2 {
+            font-size: 24px;
+        }
+
+        .order-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .order-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .quantity-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .quantity-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quantity-label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: var(--accent);
+            border-color: var(--primary);
+        }
+
+        .quantity-display {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+            background: var(--bg);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        /* Admin Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--accent) 0%, #FFF4E6 100%);
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .orders-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .order-item {
+            background: var(--bg);
+            padding: 16px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .order-item-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .order-item-details {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .form-container {
+                padding: 32px 24px;
+                margin: 40px auto;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🍓 Eden</div>
+                <div class="nav-buttons" id="navButtons">
+                    <button class="secondary" onclick="showPage('home')">Home</button>
+                    <button class="primary" onclick="showPage('login')">Order Now</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div class="page active" id="homePage">
+        <div class="container">
+            <div class="hero">
+                <h1>Fresh Fruit Salad & Parfaits</h1>
+                <p>Pre-order fresh, handcrafted fruit salads and yogurt parfaits delivered to you. 48-hour notice required.</p>
+                <button class="cta-button" onclick="showPage('login')">Place Your Order</button>
+            </div>
+
+            <div class="products">
+                <h2 class="section-title">What We Offer</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">🥗</div>
+                        <div class="product-info">
+                            <div class="product-name">Fruit Salad</div>
+                            <div class="product-desc">Fresh seasonal fruits, carefully curated and mixed to perfection. Refreshing and healthy.</div>
+                        </div>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🍨</div>
+                        <div class="product-info">
+                            <div class="product-name">Yogurt Parfait</div>
+                            <div class="product-desc">Creamy yogurt layers with granola and fresh toppings. A perfect balance of taste and nutrition.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div class="page" id="loginPage">
+        <div class="container">
+            <div class="form-container">
+                <h3 class="form-title">Welcome Back</h3>
+                <p class="form-subtitle">Sign in to place your order</p>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="your@email.com">
+                    <div class="error-message" id="loginError"></div>
+                </div>
+
+                <div class="form-buttons">
+                    <button class="primary" onclick="login()" style="flex: 1;">Sign In</button>
+                </div>
+
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
+                    <p style="font-size: 13px; color: var(--text-light); margin-bottom: 12px;">First time here?</p>
+                    <button class="secondary" onclick="showPage('register')" style="width: 100%;">Create Account</button>
+                </div>
+
+                <div style="margin-top: 16px; text-align: center;">
+                    <button class="secondary" onclick="adminLogin()" style="font-size: 12px; width: 100%;">Admin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div class="page" id="registerPage">
+        <div class="container">
+            <div class="form-container">
+                <h3 class="form-title">Join Eden</h3>
+                <p class="form-subtitle">Create your account to start ordering</p>
+                
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="registerName" placeholder="Your name">
+                </div>
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="registerEmail" placeholder="your@email.com">
+                    <div class="error-message" id="registerError"></div>
+                </div>
+
+                <div class="form-buttons">
+                    <button class="primary" onclick="register()" style="flex: 1;">Create Account</button>
+                    <button class="secondary" onclick="showPage('login')">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Page -->
+    <div class="page" id="orderPage">
+        <div class="container">
+            <div class="greeting">
+                <h2 id="greeting"></h2>
+                <button class="secondary" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="order-card">
+                <div class="order-title">Place Your Order</div>
+                
+                <div class="quantity-selector">
+                    <div class="quantity-group">
+                        <div class="quantity-label">Fruit Salads</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity('fruitSalad', -1)">−</button>
+                            <div class="quantity-display" id="fruitSaladQty">0</div>
+                            <button class="quantity-btn" onclick="updateQuantity('fruitSalad', 1)">+</button>
+                        </div>
+                    </div>
+
+                    <div class="quantity-group">
+                        <div class="quantity-label">Yogurt Parfaits</div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity('parfait', -1)">−</button>
+                            <div class="quantity-display" id="parfaitQty">0</div>
+                            <button class="quantity-btn" onclick="updateQuantity('parfait', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Delivery Date (48+ hours from now)</label>
+                    <input type="date" id="orderDate" min="">
+                </div>
+
+                <div class="form-buttons">
+                    <button class="primary" onclick="submitOrder()" style="flex: 1;">Submit Order</button>
+                </div>
+                <div class="success-message" id="orderSuccess">✓ Order placed successfully!</div>
+                <div class="error-message" id="orderError"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Page -->
+    <div class="page" id="adminPage">
+        <div class="container">
+            <div class="greeting">
+                <h2>Dashboard</h2>
+                <button class="secondary" onclick="logout()">Logout</button>
+            </div>
+
+            <div class="dashboard">
+                <div class="stat-card">
+                    <div class="stat-label">Total Customers</div>
+                    <div class="stat-value" id="totalCustomers">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Fruit Salads</div>
+                    <div class="stat-value" id="totalFruit">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Parfaits</div>
+                    <div class="stat-value" id="totalParfait">0</div>
+                </div>
+            </div>
+
+            <div class="order-card">
+                <div class="order-title">Filter by Date</div>
+                <div class="form-group" style="margin-bottom: 24px;">
+                    <input type="date" id="adminFilterDate" onchange="updateAdminDashboard()">
+                </div>
+
+                <div class="order-title" style="margin-top: 28px;">Orders</div>
+                <div class="orders-list" id="ordersList"></div>
+                <div style="text-align: center; color: var(--text-light); font-size: 14px;" id="noOrdersMsg">No orders yet</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize data structure
+        function initData() {
+            if (!localStorage.getItem('edenData')) {
+                localStorage.setItem('edenData', JSON.stringify({
+                    customers: {},
+                    orders: []
+                }));
+            }
+        }
+
+        function getData() {
+            return JSON.parse(localStorage.getItem('edenData'));
+        }
+
+        function saveData(data) {
+            localStorage.setItem('edenData', JSON.stringify(data));
+        }
+
+        function showPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            if (page === 'home') {
+                document.getElementById('homePage').classList.add('active');
+                updateNavButtons();
+            } else if (page === 'login') {
+                document.getElementById('loginPage').classList.add('active');
+                updateNavButtons();
+            } else if (page === 'register') {
+                document.getElementById('registerPage').classList.add('active');
+                updateNavButtons();
+            } else if (page === 'order') {
+                const currentUser = localStorage.getItem('currentUser');
+                if (currentUser) {
+                    document.getElementById('orderPage').classList.add('active');
+                    const data = getData();
+                    const user = data.customers[currentUser];
+                    document.getElementById('greeting').textContent = `Hi, ${user.name}`;
+                    setMinDate();
+                    updateNavButtons();
+                }
+            } else if (page === 'admin') {
+                if (localStorage.getItem('adminLoggedIn') === 'true') {
+                    document.getElementById('adminPage').classList.add('active');
+                    updateAdminDashboard();
+                    updateNavButtons();
+                }
+            }
+        }
+
+        function updateNavButtons() {
+            const currentUser = localStorage.getItem('currentUser');
+            const adminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+            const navButtons = document.getElementById('navButtons');
+            
+            if (adminLoggedIn) {
+                navButtons.innerHTML = `
+                    <button class="secondary" onclick="showPage('admin')">Dashboard</button>
+                    <button class="secondary" onclick="logout()">Logout</button>
+                `;
+            } else if (currentUser) {
+                navButtons.innerHTML = `
+                    <button class="secondary" onclick="showPage('order')">Order</button>
+                    <button class="secondary" onclick="logout()">Logout</button>
+                `;
+            } else {
+                navButtons.innerHTML = `
+                    <button class="secondary" onclick="showPage('home')">Home</button>
+                    <button class="primary" onclick="showPage('login')">Order Now</button>
+                `;
+            }
+        }
+
+        function register() {
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const errorEl = document.getElementById('registerError');
+
+            if (!name || !email) {
+                errorEl.textContent = 'Please fill all fields';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            const data = getData();
+            if (data.customers[email]) {
+                errorEl.textContent = 'This email is already registered';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            data.customers[email] = {
+                name,
+                email,
+                registeredDate: new Date().toISOString()
+            };
+            saveData(data);
+            
+            localStorage.setItem('currentUser', email);
+            showPage('order');
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const errorEl = document.getElementById('loginError');
+
+            if (!email) {
+                errorEl.textContent = 'Please enter your email';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            const data = getData();
+            if (!data.customers[email]) {
+                errorEl.textContent = 'Email not found. Please register first.';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            localStorage.setItem('currentUser', email);
+            showPage('order');
+        }
+
+        function adminLogin() {
+            const password = prompt('Enter admin password:');
+            if (password === 'eden2024') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                showPage('admin');
+            } else {
+                alert('Incorrect password');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('adminLoggedIn');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('registerName').value = '';
+            document.getElementById('registerEmail').value = '';
+            showPage('home');
+        }
+
+        function setMinDate() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 2);
+            document.getElementById('orderDate').min = tomorrow.toISOString().split('T')[0];
+        }
+
+        function updateQuantity(type, change) {
+            const id = type === 'fruitSalad' ? 'fruitSaladQty' : 'parfaitQty';
+            const current = parseInt(document.getElementById(id).textContent);
+            const newValue = Math.max(0, current + change);
+            document.getElementById(id).textContent = newValue;
+        }
+
+        function submitOrder() {
+            const fruitSalad = parseInt(document.getElementById('fruitSaladQty').textContent);
+            const parfait = parseInt(document.getElementById('parfaitQty').textContent);
+            const date = document.getElementById('orderDate').value;
+            const errorEl = document.getElementById('orderError');
+            const successEl = document.getElementById('orderSuccess');
+
+            errorEl.style.display = 'none';
+            successEl.style.display = 'none';
+
+            if (!date) {
+                errorEl.textContent = 'Please select a delivery date';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            if (fruitSalad === 0 && parfait === 0) {
+                errorEl.textContent = 'Please order at least one item';
+                errorEl.style.display = 'block';
+                return;
+            }
+
+            const currentUser = localStorage.getItem('currentUser');
+            const data = getData();
+
+            data.orders.push({
+                email: currentUser,
+                fruitSalad,
+                parfait,
+                date,
+                orderedDate: new Date().toISOString()
+            });
+
+            saveData(data);
+
+            successEl.style.display = 'block';
+            document.getElementById('fruitSaladQty').textContent = '0';
+            document.getElementById('parfaitQty').textContent = '0';
+            document.getElementById('orderDate').value = '';
+
+            setTimeout(() => {
+                successEl.style.display = 'none';
+            }, 3000);
+        }
+
+        function updateAdminDashboard() {
+            const data = getData();
+            const filterDate = document.getElementById('adminFilterDate').value;
+
+            let totalFruit = 0;
+            let totalParfait = 0;
+            let filteredOrders = data.orders;
+
+            if (filterDate) {
+                filteredOrders = data.orders.filter(o => o.date === filterDate);
+            }
+
+            filteredOrders.forEach(order => {
+                totalFruit += order.fruitSalad;
+                totalParfait += order.parfait;
+            });
+
+            document.getElementById('totalCustomers').textContent = Object.keys(data.customers).length;
+            document.getElementById('totalFruit').textContent = totalFruit;
+            document.getElementById('totalParfait').textContent = totalParfait;
+
+            const ordersList = document.getElementById('ordersList');
+            const noOrdersMsg = document.getElementById('noOrdersMsg');
+
+            ordersList.innerHTML = '';
+
+            if (filteredOrders.length === 0) {
+                noOrdersMsg.style.display = 'block';
+            } else {
+                noOrdersMsg.style.display = 'none';
+                filteredOrders.forEach(order => {
+                    const customer = data.customers[order.email];
+                    const orderEl = document.createElement('div');
+                    orderEl.className = 'order-item';
+                    orderEl.innerHTML = `
+                        <div class="order-item-name">${customer.name}</div>
+                        <div class="order-item-details">${order.fruitSalad} fruit salads, ${order.parfait} parfaits</div>
+                        <div class="order-item-details">Delivery: ${order.date}</div>
+                    `;
+                    ordersList.appendChild(orderEl);
+                });
+            }
+        }
+
+        // Initialize
+        initData();
+        updateNavButtons();
+    </script>
+</body>
+</html>
